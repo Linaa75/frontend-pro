@@ -11,11 +11,9 @@ function foo(array) {
         }
     }
 
-    if (qty > 0) {
-        return sum / qty;
-    } else {
-        return 0;
-    }
+    if (qty === 0) return 0;
+
+    return sum / qty;
 }
 
 const result = foo(array);
