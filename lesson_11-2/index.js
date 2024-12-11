@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
 
 const text = document.getElementById('text');
@@ -12,9 +11,6 @@ const defaultColor = window.getComputedStyle(text).color;
             text.style.color = "red";
         }
     });
-
-    return;
-
 });
 
  
