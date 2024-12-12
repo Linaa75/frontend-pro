@@ -15,5 +15,5 @@ const img = document.getElementById('image');
 const randomImg = Math.floor(Math.random() * images.length);
 
 img.src = images[randomImg];
-img.style.width = '600px';
+img.style.width = '800px';
 img.style.height = '600px';
