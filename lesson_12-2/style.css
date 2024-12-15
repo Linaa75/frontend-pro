@@ -1,0 +1,23 @@
+body {
+    background-color: #1c1843;
+    font-family: "Montserrat";
+    color: #fff;
+}
+
+h1 {
+    font-size: 40px;
+}
+
+button {
+    margin: 20px;
+    border: none;
+    background-color: #FAFBFC;
+    border-radius: 6px;
+    box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+    color: #24292E;
+    cursor: pointer;
+    line-height: 20px;
+    padding: 6px 16px;
+    font-family: "Montserrat";
+    font-weight: 700;
+}
