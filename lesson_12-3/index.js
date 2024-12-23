@@ -1,26 +1,29 @@
-function toDo() {
-    const input = document.getElementById('js-todo-input');
-    const name = input.value.trim();
-    if (name === '') return;
+const input = document.getElementById('js-todo-input');
+const list = document.getElementById('js-todo-list');
+const btn = document.getElementById('btn');
 
-    const list = document.getElementById('js-todo-list');
+function createToDo(value) {
     const listItem = document.createElement('li');
     listItem.className = 'js-todo-item';
-    listItem.textContent = name;
+    listItem.textContent = value;
 
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = 'Delete';
     deleteBtn.className = 'btn-delete';
     listItem.appendChild(deleteBtn);
 
-    list.appendChild(listItem);
-    input.value = '';
+    return listItem;
 } 
 
-const btn = document.getElementById('btn');
-btn.addEventListener('click', toDo);
+btn.addEventListener('click', () => {
+    if (input.value === '') return;
 
-const list = document.getElementById('js-todo-list');
+    list.appendChild(createToDo(input.value));
+    input.value = '';
+});
+
+btn.addEventListener('click', createToDo);
+
 list.addEventListener('click', function(event) {
     if (event.target && event.target.classList.contains('btn-delete')) {
         const listItem = event.target.parentElement;
