@@ -17,7 +17,7 @@ function button() {
 
     btnSecond.addEventListener('click', function() {
         if (url) {
-            window.open(url, '_blank');
+            location.href = url;
         } else {
             alert("No valid URL entered!");
         }
