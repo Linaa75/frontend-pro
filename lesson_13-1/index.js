@@ -69,21 +69,17 @@ phone.addEventListener('input', () => phoneCheck(phone.value));
 btnSubmit.addEventListener('click', (e) => {
     e.preventDefault();
 
-    if (!userName.value.trim()) {
-        spanTextName.innerText = "Name is required!";
-        spanTextName.style.color = "red";
-        userName.classList.add('invalid');
+    function checkField(input, spanText, errorMessage) {
+        if (!input.value.trim()) {
+            spanText.innerText = errorMessage;
+            spanText.style.color = "red";
+            input.classList.add('invalid');
+        }
     }
-    if (!email.value.trim()) {
-        spanTextEmail.innerText = "Email is required!";
-        spanTextEmail.style.color = "red";
-        email.classList.add('invalid');
-    }
-    if (!phone.value.trim()) {
-        spanTextPhone.innerText = "Phone is required!";
-        spanTextPhone.style.color = "red";
-        phone.classList.add('invalid');
-    }
+    checkField(userName, spanTextName, "Name is required!");
+    checkField(email, spanTextEmail, "Email is required!");
+    checkField(phone, spanTextPhone, "Phone is required!");
+    
     
     if (nameCheck(userName.value) && emailCheck(email.value) && phoneCheck(phone.value)) {
         const formData = {
