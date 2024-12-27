@@ -1,4 +1,4 @@
-const myCarousel = document.getElementById('carouselExampleCaptions')
+const myCarousel = document.getElementById('carouselExampleCaptions');
 const next = document.getElementById('next');
 const prev = document.querySelector('.carousel-control-prev');
 
