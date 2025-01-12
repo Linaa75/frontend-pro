@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('storage', (e) => {
         if (e.key === 'tasks') {
             tasks = JSON.parse(e.newValue);
-            taskList.innerHTML = '';
+            taskList.innerText = '';
             tasks.forEach(task => {
                 addTask(task.content, task.completed);
             });
