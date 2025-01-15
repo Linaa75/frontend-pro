@@ -1,27 +1,18 @@
 class Timer {
     constructor(container) {
         this.container = container;
-
-        this.timerDisplay = document.createElement("div");
-        this.timerDisplay.classList.add("timer-display");
+        this.timerDisplay = this.createElement('div', 'timer-display', '00:00');
         this.timerDisplay.contentEditable = true;
-        this.timerDisplay.textContent = "00:00";
+
+        this.p = this.createElement('p', '', 'Enter your time in the circle');
+        this.startButton = this.createElement('button', '', 'Start Timer');
+        this.stopButton = this.createElement('button', '', 'Stop');
+        this.removeButton = this.createElement('button', '', 'Remove');
+
         this.container.appendChild(this.timerDisplay);
-
-        this.p = document.createElement("p");
-        this.p.textContent = "Enter your time in the circle";
         this.container.appendChild(this.p);
-
-        this.startButton = document.createElement("button");
-        this.startButton.textContent = "Start Timer";
         this.container.appendChild(this.startButton);
-
-        this.stopButton = document.createElement("button");
-        this.stopButton.textContent = "Stop";
         this.container.appendChild(this.stopButton);
-
-        this.removeButton = document.createElement("button");
-        this.removeButton.textContent = "Remove";
         this.container.appendChild(this.removeButton);
 
         this.intervalId = null;
@@ -30,9 +21,15 @@ class Timer {
         this.startButton.addEventListener("click", () => this.startTimer());
         this.stopButton.addEventListener("click", () => this.stopTimer());
         this.removeButton.addEventListener("click", () => this.removeTimer());
-
         this.timerDisplay.addEventListener("blur", () => this.updateTime());
         this.timerDisplay.addEventListener("input", () => this.colonCheck());
+    }
+
+    createElement(tag, className = '', textContent = '') {
+        const element = document.createElement(tag);
+        if (className) element.classList.add(className);
+        element.textContent = textContent;
+        return element;
     }
 
     updateDisplay() {
@@ -47,7 +44,7 @@ class Timer {
     }
 
     updateTime() {
-        const timeParts = this.timerDisplay.textContent.split(":");
+        const timeParts = this.timerDisplay.textContent.split(":").map(Number);
         const minutes = parseInt(timeParts[0]);
         const seconds = parseInt(timeParts[1]);
 
@@ -60,43 +57,35 @@ class Timer {
     }
 
     startTimer() {
-        return new Promise((resolve, reject) => {
-            if (this.timeLeft <= 0) {
-                alert("Please enter a valid time");
-                reject("Invalid time");
-                return;
-            }
+        if (this.timeLeft <= 0) {
+            console.log("Please enter a valid time");
+            return;
+        }
 
+        this.updateDisplay();
+        this.p.style.display = "none";
+
+        if (this.intervalId) {
+            clearInterval(this.intervalId);
+        }
+
+        this.intervalId = setInterval(() => {
+            this.timeLeft--;
             this.updateDisplay();
-            this.p.style.display = "none";
 
-            if (this.intervalId) {
+            if (this.timeLeft <= 0) {
                 clearInterval(this.intervalId);
+                this.timerDisplay.textContent = "00:00";
+                console.log("Time's up!");
             }
-
-            this.intervalId = setInterval(() => {
-                this.timeLeft--;
-
-                this.updateDisplay();
-
-                if (this.timeLeft <= 0) {
-                    clearInterval(this.intervalId);
-                    this.timerDisplay.textContent = "00:00";
-                    alert("Time's up!");
-                    resolve("Time's up!");
-                }
-            }, 1000);
-        });
+        }, 1000);
     }
 
     stopTimer() {
-        return new Promise((resolve) => {
-            if (this.intervalId) {
-                clearInterval(this.intervalId);
-                this.intervalId = null;
-            }
-            resolve("Timer stopped");
-        });
+        if (this.intervalId) {
+            clearInterval(this.intervalId);
+            this.intervalId = null;
+        }
     }
 
     removeTimer() {
@@ -110,7 +99,7 @@ class Timer {
         this.container.removeChild(this.startButton);
         this.container.removeChild(this.stopButton);
         this.container.removeChild(this.removeButton);
-        alert("Timer removed");
+        console.log("Timer removed");
     }
 
     colonCheck() {
