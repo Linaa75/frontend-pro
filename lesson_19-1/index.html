@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lesson_19-1</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>lesson_19-1 | Weather App</h1>
+    </header>
+    <main>
+        <select id="city-select" class="select">
+            <option value="" disabled selected>Choose your city</option>
+            <option value="1">Kyiv</option>
+            <option value="2">Odesa</option>
+            <option value="3">Lviv</option>
+            <option value="4">Dnipro</option>
+            <option value="5">Lutsk</option>
+            <option value="6">Vinnytsia</option>
+            <option value="7">Uzhhorod</option>
+        </select>
+
+        <div class="update">
+            <button class="btn" id="refresh-btn">Оновити</button>
+        </div>
+
+        <section class="result">
+            <p class="city" id="selected-city"></p>
+            <p class="temperature" id="temperature"></p>
+            <p class="description" id="description"></p>
+            <ul>
+                <li>
+                    <span>Clouds</span>
+                    <span id="clouds"></span>%
+                </li>
+                <li>
+                    <span>Humidity</span>
+                    <span id="humidity"></span>%
+                </li>
+                <li>
+                    <span>Pressure</span>
+                    <span id="pressure"></span>hPa
+                </li>
+            </ul>
+        </section>
+    </main>
+</body>
+</html>
