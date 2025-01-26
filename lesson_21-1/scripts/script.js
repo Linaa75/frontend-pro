@@ -128,5 +128,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-
-const lala = 5;
