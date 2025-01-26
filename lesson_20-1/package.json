@@ -1,0 +1,20 @@
+{
+  "name": "start-with-npm",
+  "version": "1.0.0",
+  "description": "todo list with jquery",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "npm"
+  ],
+  "author": "valeriia",
+  "license": "ISC",
+  "dependencies": {
+    "jquery": "^3.7.1"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}

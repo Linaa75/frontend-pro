@@ -1,0 +1,99 @@
+body {
+    background-color: #080800 !important;
+    color: #fff !important;
+}
+
+.container {
+    padding: 30px;
+}
+
+h4 {
+    padding: 0 0 30px;
+}
+
+img {
+    object-fit: cover;
+}
+
+.carousel-indicators {
+    margin-bottom: -4rem !important;
+}
+
+.carousel-indicators [data-bs-target] {
+    background-color: #ff7426 !important;
+    width: 19px !important;
+    height: 19px !important;
+    border-radius: 50%;
+}
+
+.carousel-indicators [data-bs-target]:hover {
+    background-image: linear-gradient(92.83deg, #ff7426 0, #df3412 100%);
+}
+
+.next, .prev {
+  cursor: pointer;
+  display: inline-block;
+  min-height: 64px;
+  position: relative;
+  vertical-align: middle;
+  z-index: 0;
+}
+
+@media (min-width: 320px) {
+  .next, .prev {
+    padding: 10px 10px;
+  }
+}
+@media (min-width: 1024px) {
+    .next, .prev {
+      padding: 10px 32px;
+    }
+}
+
+.next:before, .next:after, .prev:before, .prev:after {
+  border-radius: 50px;
+}
+
+.next:before, .prev:before {
+  background-color: rgba(249, 58, 19, .32);
+  content: "";
+  display: block;
+  height: 100%;
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: -2;
+}
+
+.next:after, .prev:after {
+  background-color: initial;
+  background-image: linear-gradient(92.83deg, #ff7426 0, #f93a13 100%);
+  bottom: 4px;
+  content: "";
+  display: block;
+  left: 4px;
+  overflow: hidden;
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  transition: all 100ms ease-out;
+  z-index: -1;
+}
+
+.next:hover:not(:disabled):after, .prev:hover:not(:disabled):after {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  transition-timing-function: ease-in;
+}
+
+.next:active:not(:disabled):after, .prev:active:not(:disabled):after {
+  background-image: linear-gradient(0deg, rgba(0, 0, 0, .2), rgba(0, 0, 0, .2)), linear-gradient(92.83deg, #ff7426 0, #f93a13 100%);
+  bottom: 4px;
+  left: 4px;
+  right: 4px;
+  top: 4px;
+}
