@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const modal = document.getElementById('id-modal');
         const modalTitle = document.getElementById('id-modal-title');
-     //   const modalClose = document.getElementById('modal-close');
 
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
@@ -23,8 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const span = document.createElement('span');
         span.classList.add('todo-item__description');
         span.textContent = content;
-
-       // const spanComplited = document.getElementById('todo-item__description--completed');
 
         const removeBtn = document.createElement('button');
         removeBtn.classList.add("delete-btn");
