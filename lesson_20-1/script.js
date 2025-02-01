@@ -1,127 +1,102 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const form = document.forms.form;
-    const taskList = document.querySelector('[data-list]');
-    const clearTaskBtn = document.querySelector('[data-clear]');
-
+$(document).ready(function () {
+    const $form = $('form[name="form"]');
+    const $taskList = $('[data-list]');
+    const $clearTaskBtn = $('[data-clear]');
     let tasks = [];
 
     if (localStorage.getItem('tasks')) tasks = JSON.parse(localStorage.getItem('tasks'));
 
     function addTask(content, checked = false) {
-        const li = document.createElement('li');
-        li.style.display = 'flex';
-        li.classList.add('todo-item');
+        const $li = $('<li>', { class: 'todo-item', style: 'display: flex' });
+        const $checkbox = $('<input>', { type: 'checkbox', checked: checked });
+        const $span = $('<span>', { class: 'todo-item__description', text: content });
+        const $removeBtn = $('<button>', { class: 'delete-btn', text: 'Видалити', 'data-clear': true });
 
-        const modal = document.getElementById('id-modal');
-        const modalTitle = document.getElementById('id-modal-title');
+        const $modal = $('#id-modal');
+        const $modalTitle = $('#id-modal-title');
 
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.checked = checked;
-
-        const span = document.createElement('span');
-        span.classList.add('todo-item__description');
-        span.textContent = content;
-
-        const removeBtn = document.createElement('button');
-        removeBtn.classList.add("delete-btn");
-        removeBtn.textContent = "Видалити";
-        removeBtn.dataset.clear = "true";
-
-        li.addEventListener('click', (e) => {
-            if (e.target === span) {
-                modal.style.display = "block";
-                modalTitle.textContent = span.textContent;
+        $li.on('click', function (e) {
+            if ($(e.target).is($span)) {
+                $modal.show();
+                $modalTitle.text($span.text());
             }
         });
 
-        document.getElementById('modal-close').addEventListener('click', () => {
-            modal.style.display = "none";
+        $('#modal-close').on('click', function () {
+            $modal.hide();
         });
 
-
-        removeBtn.addEventListener('click', (e) => {
-            const taskItem = e.currentTarget.closest('li');
-            taskItem.remove();
-
+        $removeBtn.on('click', function () {
+            $li.remove();
             tasks = tasks.filter(task => task.content !== content);
-
             if (!tasks.length) {
-                clearTaskBtn.style.display = "none";
+                $clearTaskBtn.hide();
             }
-
-            localStorage.setItem("tasks", JSON.stringify(tasks));
+            localStorage.setItem('tasks', JSON.stringify(tasks));
         });
 
-        checkbox.addEventListener('change', () => {
+        $checkbox.on('change', function () {
             const task = tasks.find(task => task.content === content);
-            task.completed = checkbox.checked;
+            task.completed = $checkbox.prop('checked');
 
-            if (checkbox.checked) {
-                span.classList.add('todo-item__description--completed');
-                removeBtn.classList.add('todo-item__delete--completed');
+            if ($checkbox.prop('checked')) {
+                $span.addClass('todo-item__description--completed');
+                $removeBtn.addClass('todo-item__delete--completed');
             } else {
-                span.classList.remove('todo-item__description--completed');
-                removeBtn.classList.remove('todo-item__delete--completed');
+                $span.removeClass('todo-item__description--completed');
+                $removeBtn.removeClass('todo-item__delete--completed');
             }
-
-            localStorage.setItem("tasks", JSON.stringify(tasks));
+            localStorage.setItem('tasks', JSON.stringify(tasks));
         });
 
         if (checked) {
-            span.classList.add('todo-item__description--completed');
-            removeBtn.classList.add('todo-item__delete--completed');
+            $span.addClass('todo-item__description--completed');
+            $removeBtn.addClass('todo-item__delete--completed');
         }
 
-        li.append(checkbox);
-        li.append(span);
-        li.append(removeBtn);
-        taskList.append(li);
+        $li.append($checkbox, $span, $removeBtn);
+        $taskList.append($li);
     }
 
     if (tasks.length) {
         tasks.forEach(task => {
             addTask(task.content, task.completed);
         });
-        clearTaskBtn.style.display = 'block';
+        $clearTaskBtn.show();
     }
 
-    form.addEventListener('submit', (e) => {
+    $form.on('submit', function (e) {
         e.preventDefault();
 
-        const taskInput = form.elements.value;
-        if (taskInput.value.trim()) {
+        const taskInput = $form.find('input[name="value"]');
+        if (taskInput.val().trim()) {
             const newTask = {
-                content: taskInput.value.trim(),
+                content: taskInput.val().trim(),
                 completed: false
             };
             tasks.push(newTask);
             addTask(newTask.content);
-            localStorage.setItem("tasks", JSON.stringify(tasks));
+            localStorage.setItem('tasks', JSON.stringify(tasks));
 
-            clearTaskBtn.style.display = "block";
+            $clearTaskBtn.show();
         }
 
-        e.target.reset();
+        $form[0].reset();
     });
 
-    if (clearTaskBtn) {
-        clearTaskBtn.addEventListener('click', () => {
+    if ($clearTaskBtn.length) {
+        $clearTaskBtn.on('click', function () {
             tasks = [];
             localStorage.clear();
-
-            while (taskList.firstElementChild) {
-                taskList.firstElementChild.remove();
-            }
-
-            clearTaskBtn.style.display = "none";
+            $taskList.empty();
+            $clearTaskBtn.hide();
         });
     }
 
-    window.addEventListener('storage', (e) => {
-        if (e.key === 'tasks') {
-            tasks = JSON.parse(e.newValue);
-            taskList.innerText = '';
+    $(window).on('storage', function (e) {
+        if (e.originalEvent.key === 'tasks') {
+            tasks = JSON.parse(e.originalEvent.newValue);
+            $taskList.empty();
             tasks.forEach(task => {
                 addTask(task.content, task.completed);
             });
