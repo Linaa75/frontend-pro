@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="icon" href="img.jpg" type="image/png">
+</head>
+<body>
+    <div class="container">
+        <h1>ToDoList</h1>
+        <form class="form js--form" name="form">
+            <input type="text" name="value" required class="form__input js--form__input">
+            <button class="form__btn" type="submit">Додати</button>
+        </form>
+        <ul class="js--todos-wrapper" data-list>
+        </ul>
+        <button data-clear style="display: none;" class="btn-clear">Очистити</button>
+
+        <div id="id-modal" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="id-modal-title"></h5>
+                </div>
+                <div class="modal-body" id="id-modal-text">Text
+                </div>
+                <div id="modal-close" class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
