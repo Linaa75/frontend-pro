@@ -7,8 +7,9 @@ import ESLintPlugin from "eslint-webpack-plugin";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-export default (env, { mode = "development" }) => {
-    const isProd = mode === 'production';
+export default (env, argv) => {
+    const mode = process.env.MODE || argv.mode || "development";
+    const isProd = mode === "production";  
 
     return {
         mode,
@@ -16,7 +17,7 @@ export default (env, { mode = "development" }) => {
         devtool: !isProd ? "source-map" : false,
         output: {
             path: resolve(__dirname, "dist"),
-            filename: "index.js",
+            filename: "[name].[contenthash].js",
         },
         module: {
             rules: [
