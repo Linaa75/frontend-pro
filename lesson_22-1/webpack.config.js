@@ -3,6 +3,9 @@ import { fileURLToPath } from "url";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import CopyPlugin from "copy-webpack-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
+import path from "path";
+import ImageMinimizerPlugin from "image-minimizer-webpack-plugin";
+import TerserPlugin from "terser-webpack-plugin";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -98,5 +101,54 @@ export default (env, argv) => {
       }),
       new ESLintPlugin(),
     ],
+    devServer: {
+      static: {
+        directory: path.join(__dirname, 'public'),
+      },
+      compress: true,
+      port: 9000,
+    },
+    optimization: {
+      minimizer: [
+        new ImageMinimizerPlugin({
+          minimizer: {
+            implementation: ImageMinimizerPlugin.imageminMinify,
+            options: {
+              plugins: [
+                ["gifsicle", { interlaced: true }],
+                ["jpegtran", { progressive: true }],
+                ["optipng", { optimizationLevel: 5 }],
+                [
+                  "svgo",
+                  {
+                    plugins: [
+                      {
+                        name: "preset-default",
+                        params: {
+                          overrides: {
+                            removeViewBox: false,
+                            addAttributesToSVGElement: {
+                              params: {
+                                attributes: [
+                                  { xmlns: "http://www.w3.org/2000/svg" },
+                                ],
+                              },
+                            },
+                          },
+                        },
+                      },
+                    ],
+                  },
+                ],
+              ],
+            },
+          },
+        }),
+      ],
+    },
+    optimization: {
+      minimize: true,
+      minimizer: [new TerserPlugin()],
+    },
   };
 };
