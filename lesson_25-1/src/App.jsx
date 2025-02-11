@@ -1,89 +1,85 @@
-import { useState } from "react";
+import React, { Component } from "react";
 import "./App.css";
-import { useEffect } from "react";
 
-function App() {
-  const [items, setItems] = useState([
-    {
-      id: 1,
-      emoji: "🥳",
-      result: 0
-    },
-    {
-      id: 2,
-      emoji: "🤗",
-      result: 0
-    },
-    {
-      id: 3,
-      emoji: "😄",
-      result: 0
-    },
-    {
-      id: 4,
-      emoji: "😉",
-      result: 0
-    },
-    {
-      id: 5,
-      emoji: "🥰",
-      result: 0
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      items: [
+        { id: 1, emoji: "🥳", result: 0 },
+        { id: 2, emoji: "🤗", result: 0 },
+        { id: 3, emoji: "😄", result: 0 },
+        { id: 4, emoji: "😉", result: 0 },
+        { id: 5, emoji: "🥰", result: 0 }
+      ],
+      winner: null
+    };
+  }
+
+  componentMount() {
+    const storedVotes = localStorage.getItem("emojiVotes");
+    if (storedVotes) {
+      this.setState({ items: JSON.parse(storedVotes) });
     }
-  ]);
+  }
 
-  const [winner, setWinner] = useState(); 
+  componentUpdate(prevProps, prevState) {
+    if (prevState.items !== this.state.items) {
+      localStorage.setItem("emojiVotes", JSON.stringify(this.state.items));
+    }
+  }
 
-  const votesHandler = id => {
-    setItems(prevItems => {
-      return prevItems.map(item => item.id === id ? {...item, result: item.result + 1 } : item)
+  votesHandler = id => {
+    this.setState(prevState => {
+      const updatedItems = prevState.items.map(item =>
+        item.id === id ? { ...item, result: item.result + 1 } : item
+      );
+      return { items: updatedItems };
     });
-  } 
+  };
 
-  useEffect(() => {
-    localStorage.setItem("emojiVotes", JSON.stringify(items));
-  }, [items]);
+  showResultsHandler = () => {
+    const maxVotes = Math.max(...this.state.items.map(item => item.result));
+    const winner = this.state.items.find(item => item.result === maxVotes);
+    this.setState({ winner });
+  };
 
-  const showResultsHandler = () => {
-    const maxVotes = Math.max(...items.map(itemMax => itemMax.result));
-    const winner = items.find(itemWin => itemWin.result === maxVotes); 
-    setWinner(winner);
-  }
-
-  const clearResultsHandler = () => {
-    const resetItems = items.map(itemReset => ({...itemReset, result: 0}));
-    setItems(resetItems);
-    setWinner(null);
+  clearResultsHandler = () => {
+    const resetItems = this.state.items.map(item => ({ ...item, result: 0 }));
+    this.setState({ items: resetItems, winner: null });
     localStorage.setItem("emojiVotes", JSON.stringify(resetItems));
-  }
+  };
 
-  return (
-    <>
-    <div className="container">
-      <h1>Голосування за найкращий смайлик</h1>
-      <div className="container-emoji">
-          {
-            items.map(item => (
-              <div key={item.id} onClick={() => votesHandler(item.id)}>
-                <p className="item-emoji">{item.emoji}
-                <span className="item-result">{item.result}</span></p></div>
-            ))
-          }
-      </div>
-      <div className="container-btns">
-        <button onClick={showResultsHandler}>Show results</button>
-        <button onClick={clearResultsHandler}>Clear</button>
-      </div>
-      <div className="container-result">
-        <p className="result-title">Результати голосування:</p>
-        { winner && <div>
-          <p>Переможець: {winner.emoji}</p>
-          <p>Кількість голосів {winner.result}</p>
+  render() {
+    return (
+      <div className="container">
+        <h1>Голосування за найкращий смайлик</h1>
+        <div className="container-emoji">
+          {this.state.items.map(item => (
+            <div key={item.id} onClick={() => this.votesHandler(item.id)}>
+              <p className="item-emoji">
+                {item.emoji}
+                <span className="item-result">{item.result}</span>
+              </p>
+            </div>
+          ))}
         </div>
-        }
+        <div className="container-btns">
+          <button onClick={this.showResultsHandler}>Show results</button>
+          <button onClick={this.clearResultsHandler}>Clear</button>
+        </div>
+        <div className="container-result">
+          <p className="result-title">Результати голосування:</p>
+          {this.state.winner && (
+            <div>
+              <p>Переможець: {this.state.winner.emoji}</p>
+              <p>Кількість голосів {this.state.winner.result}</p>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
-    </>
-  )
+    );
+  }
 }
 
-export default App
+export default App;
