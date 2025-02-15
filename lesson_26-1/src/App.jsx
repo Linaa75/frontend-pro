@@ -53,15 +53,15 @@ function App() {
 
   const showResultsHandler = () => {
     const maxVotes = Math.max(...items.map((item) => item.result));
-    const winner = items.find((item) => item.result === maxVotes);
-    setWinner(winner);
+    const winners = items.filter((item) => item.result === maxVotes);
+
+    setWinner(winners.length > 1 ? winners : winners[0]);
   };
 
   const clearResultsHandler = () => {
     const resetItems = items.map((item) => ({ ...item, result: 0 }));
     setItems(resetItems);
     setWinner(null);
-    localStorage.setItem("emojiVotes", JSON.stringify(resetItems));
   };
 
   return (
@@ -69,7 +69,7 @@ function App() {
       <div className="container">
       <h1>Голосування за найкращий смайлик</h1>
       <div className="container-emoji">
-        {items.map((item) => (
+        {items.map(item => (
           <div key={item.id} onClick={() => votesHandler(item.id)}>
             <p className="item-emoji">
               {item.emoji}
@@ -86,14 +86,27 @@ function App() {
         <p className="result-title">Результати голосування:</p>
         {winner && (
           <div>
-            <p>Переможець: {winner.emoji}</p>
-            <p>Кількість голосів {winner.result}</p>
+            {Array.isArray(winner) ? (
+              <div>
+                <p>Переможці:</p>
+                {winner.map((item, index) => (
+                  <p key={index}>
+                    {item.emoji} - {item.result} голосів
+                  </p>
+                ))}
+              </div>
+            ) : (
+              <div>
+                <p>Переможець: {winner.emoji}</p>
+                <p>Кількість голосів {winner.result}</p>
+              </div>
+            )}
           </div>
         )}
       </div>
-    </div>
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
