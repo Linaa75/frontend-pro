@@ -16,14 +16,14 @@ class App extends Component {
     };
   }
 
-  componentMount() {
+  componentDidMount() {
     const storedVotes = localStorage.getItem("emojiVotes");
     if (storedVotes) {
       this.setState({ items: JSON.parse(storedVotes) });
     }
   }
 
-  componentUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     if (prevState.items !== this.state.items) {
       localStorage.setItem("emojiVotes", JSON.stringify(this.state.items));
     }
@@ -40,8 +40,13 @@ class App extends Component {
 
   showResultsHandler = () => {
     const maxVotes = Math.max(...this.state.items.map(item => item.result));
-    const winner = this.state.items.find(item => item.result === maxVotes);
-    this.setState({ winner });
+    const winners = this.state.items.filter(item => item.result === maxVotes);
+    
+    if (winners.length > 1) {
+      this.setState({ winner: winners });
+    } else {
+      this.setState({ winner: winners[0] });
+    }
   };
 
   clearResultsHandler = () => {
