@@ -1,0 +1,34 @@
+.container {
+  background-color: #EECEC1;
+  border-radius: 12px;
+  border: 1px solid #5F494E;
+  padding: 10px;
+  box-shadow: rgba(0, 0, 0, 0.55) 0px 5px 15px;
+  margin: 30px;
+}
+
+h2 {
+  text-align: center;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  list-style: none;
+  padding-inline-start: 0;
+  padding: 20px;
+}
+
+li {
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  border-radius: 12px;
+  background-color: #5F494E;
+  color: #F5F5F3;
+  padding: 10px;
+  text-transform: capitalize;
+  font-size: 18px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  letter-spacing: 1px;
+}

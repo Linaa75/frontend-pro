@@ -1,0 +1,35 @@
+header {
+  padding: 10px 0 70px 0;
+  font-size: 18px;
+  text-transform: capitalize;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+}
+
+.inputTodo {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 7px;
+
+  input, button {
+    border-radius: 12px;
+    font-size: 15px;
+    font-family: Georgia, "Times New Roman", Times, serif;
+  }
+
+  input {
+    padding: 7px;
+    width: 50%;
+    border: 1px solid #5F494E;
+  }
+
+  button {
+    padding: 10px 12px;
+    background-color: #5F494E;
+    border: none;
+    color: #F5F5F3;
+  }
+}
