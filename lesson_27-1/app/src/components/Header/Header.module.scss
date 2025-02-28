@@ -1,0 +1,26 @@
+header {
+    font-size: 18px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 5px 20px;
+}
+
+.navHeader {
+    display: flex;
+    gap: 50px;
+    justify-content: space-between;
+}
+
+.themeHeaderBtn {
+    display: flex;
+    align-items: center;
+}
+
+.ulHeader {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    list-style: none;
+}
