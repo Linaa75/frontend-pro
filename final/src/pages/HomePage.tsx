@@ -1,13 +1,15 @@
 import { Box, Typography } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { FilterForm, HotelCard, PageContainer } from '../components';
+import { FilterForm, HotelList, PageContainer } from '../components';
 import { IDestination, IFilterFormParams, IHotel } from '../types/types';
+import Loader from '../components/Loader/Loader';
 
 const HomePage = () => {
   const [destinations, setDestinations] = useState<IDestination[]>([]);
   const [hotels, setHotels] = useState<IHotel[]>([]);
   const [hotelsNotFound, setHotelsNotFound] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const filterHotels = (hotels: IHotel[], destination: string) => {
     
@@ -34,6 +36,7 @@ const HomePage = () => {
   }, []);
 
   const submitFilterFormHandler = async (values: IFilterFormParams) => {
+    setLoading(true);
     try {
       await axios.get('http://localhost:3001/hotels')
         .then((response) => {
@@ -44,10 +47,12 @@ const HomePage = () => {
             setHotelsNotFound(false);
           }
           setHotels(hotels);
+          setLoading(false);
         }
       );
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   };
 
@@ -72,33 +77,8 @@ const HomePage = () => {
         At Travel With Booking, we believe that travel is more than just a destination—it's an experience. Whether you're planning a relaxing beach getaway, an adventurous mountain trek, or a cultural city tour, we're here to make your journey seamless and memorable. With our easy-to-use platform, you can find the best hotels, flights, and rental services that suit your preferences and budget. We partner with leading travel providers to offer you exclusive deals and discounts, ensuring that you get the most value for your trip.
         </Typography>
       </Box>
-      {hotelsNotFound && (
-        <Typography variant="h2" gutterBottom>
-          Hotels not found
-        </Typography>
-      )}
-      {hotels.length > 0 && (
-        <Box sx={{ margin: '40px 0' }}>
-          <Typography
-            variant="h2"
-            gutterBottom
-            sx={{ fontSize: '1.5rem', fontWeight: 'bold' }}
-          >
-            Hotels
-          </Typography>
-          <Box
-            sx={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              gap: '20px'
-            }}
-          >
-            {hotels.map((hotel: IHotel) => (
-              <HotelCard key={hotel.id} hotel={hotel} />
-            ))}
-          </Box>
-        </Box>
-      )}
+      {loading && <Loader/>}
+      {!loading && <HotelList  hotels={hotels} hotelsNotFound={hotelsNotFound} />}
     </PageContainer>
   );
 };

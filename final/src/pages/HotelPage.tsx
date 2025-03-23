@@ -7,22 +7,11 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { PageContainer } from '../components';
-
-interface Hotel {
-  id: string;
-  name: string;
-  address: string;
-  city: string;
-  state: string | null;
-  country_code: string;
-  hotel_rating: number;
-  phone_number: string | null;
-  website: string | null;
-}
+import { IHotel } from '../types/types';
 
 const HotelPage = () => {
   const { id } = useParams<{ id: string }>();
-  const [hotel, setHotel] = useState<Hotel | null>(null);
+  const [hotel, setHotel] = useState<IHotel | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -30,7 +19,7 @@ const HotelPage = () => {
     if (!id) return;
 
     axios
-      .get<Hotel>(`http://localhost:3001/hotels/${id}`)
+      .get<IHotel>(`http://localhost:3001/hotels/${id}`)
       .then((res) => {
         setHotel(res.data);
         setError(null);

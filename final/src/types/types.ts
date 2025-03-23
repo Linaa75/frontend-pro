@@ -14,18 +14,6 @@ export interface IFilterFormParams {
   };
 }
 
-// {
-//       "id": "11003176",
-//       "name": "Amolite Hotel",
-//       "address": "Avenida Curitiba, 811",
-//       "city": "New York",
-//       "state": null,
-//       "country_code": "BR",
-//       "hotel_rating": 0,
-//       "phone_number": null,
-//       "website": null
-//     },
-
 export interface IHotel {
   id: string;
   name: string;
