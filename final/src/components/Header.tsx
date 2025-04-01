@@ -1,19 +1,16 @@
-import { useState } from 'react';
+import MenuIcon from '@mui/icons-material/Menu';
 import {
   AppBar,
-  Toolbar,
-  Typography,
-  IconButton,
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
   Box,
   Button,
+  Drawer,
+  IconButton,
+  Toolbar,
+  Typography
 } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
+import { useState } from 'react';
 import { Link as RouterLink } from 'react-router';
+import Navigation from './Navigation';
 
 const navItems = [
   { label: 'Home', path: '/' },
@@ -26,27 +23,6 @@ const Header = () => {
   const handleDrawerToggle = () => {
     setMobileOpen((prev) => !prev);
   };
-
-  const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
-        Booking
-      </Typography>
-      <List>
-        {navItems.map((item) => (
-          <ListItem key={item.label} disablePadding>
-            <ListItemButton
-              component={RouterLink}
-              to={item.path}
-              sx={{ textAlign: 'center' }}
-            >
-              <ListItemText primary={item.label} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
 
   return (
     <>
@@ -96,7 +72,7 @@ const Header = () => {
           '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 240 },
         }}
       >
-        {drawer}
+        {<Navigation handleDrawerToggle={handleDrawerToggle} listItems={navItems} />}
       </Drawer>
     </>
   );

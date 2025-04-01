@@ -2,22 +2,12 @@ import { Box, Typography } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { FilterForm, HotelList, PageContainer } from '../components';
-import { IDestination, IFilterFormParams, IHotel } from '../types/types';
-import Loader from '../components/Loader/Loader';
+import { IDestination } from '../types';
+import Loader from '../components/Loader';
+import { useHotelFilter } from '../hooks/useHotel';
 
 const HomePage = () => {
   const [destinations, setDestinations] = useState<IDestination[]>([]);
-  const [hotels, setHotels] = useState<IHotel[]>([]);
-  const [hotelsNotFound, setHotelsNotFound] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const filterHotels = (hotels: IHotel[], destination: string) => {
-    
-    if (hotels.length === 0) {
-      return [];
-    }
-    return hotels.filter((hotel: IHotel) => hotel.city === destination);
-  }
 
   useEffect(() => {
     const fetchDestinations = async () => {
@@ -35,27 +25,12 @@ const HomePage = () => {
     fetchDestinations();
   }, []);
 
-  const submitFilterFormHandler = async (values: IFilterFormParams) => {
-    setLoading(true);
-    try {
-      await axios.get('http://localhost:3001/hotels')
-        .then((response) => {
-          const hotels = filterHotels(response.data, values.destination);
-          if (hotels.length === 0) {
-            setHotelsNotFound(true);
-          } else {
-            setHotelsNotFound(false);
-          }
-          setHotels(hotels);
-          setLoading(false);
-        }
-      );
-    } catch (error) {
-      console.error(error);
-      setLoading(false);
-    }
-  };
-
+  const {
+    hotels,
+    hotelsNotFound,
+    loading,
+    submitFilterFormHandler,
+  } = useHotelFilter();
 
   return (
     <PageContainer styles={{ marginTop: '40px' }}>

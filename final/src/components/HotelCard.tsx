@@ -1,6 +1,6 @@
 import { Box, CardMedia, Typography } from '@mui/material';
 import { Link } from 'react-router';
-import { IHotel } from '../types/types';
+import { IHotel } from '../types';
 import { generatePlaceholderUrl } from '../utils/generatePlaceholderUrl';
 
 interface IHotelCardProps {

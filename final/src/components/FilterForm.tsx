@@ -1,6 +1,12 @@
-import { Box, Autocomplete, TextField, Button, MenuItem } from '@mui/material';
-import { IDestination, IFilterFormParams } from '../types/types';
-import { useState } from 'react';
+import {
+  Box,
+  Autocomplete,
+  TextField,
+  Button,
+  MenuItem,
+} from '@mui/material';
+import { Controller, useForm } from 'react-hook-form';
+import { IDestination, IFilterFormParams } from '../types';
 
 interface IFilrerFormProps {
   onSubmit: (filter: IFilterFormParams) => void;
@@ -8,20 +14,28 @@ interface IFilrerFormProps {
 }
 
 const FilterForm = ({ onSubmit, destinations }: IFilrerFormProps) => {
-  const [formData, setFormData] = useState<IFilterFormParams>({
-    destination: '',
-    checkIn: new Date(),
-    checkOut: new Date(),
-    guests: {
-      adults: 1,
-      children: 0,
+  const today = new Date().toISOString().split('T')[0];
+
+  const { control, handleSubmit } = useForm<IFilterFormParams>({
+    defaultValues: {
+      destination: '',
+      checkIn: new Date(),
+      checkOut: new Date(),
+      guests: {
+        adults: 1,
+        children: 0,
+      },
     },
   });
 
-  const today = new Date().toISOString().split('T')[0];
+  const handleFormSubmit = (data: IFilterFormParams) => {
+    onSubmit(data);
+  };
 
   return (
     <Box
+      component="form"
+      onSubmit={handleSubmit(handleFormSubmit)}
       sx={{
         display: 'flex',
         alignItems: 'center',
@@ -31,77 +45,92 @@ const FilterForm = ({ onSubmit, destinations }: IFilrerFormProps) => {
         gap: 2,
       }}
     >
-      <Autocomplete
-        options={destinations}
-        getOptionLabel={(option) => option.label}
-        getOptionKey={(option) => option.value}
-        style={{ width: 300 }}
-        renderInput={(params) => <TextField {...params} label="Destination" />}
-        onChange={(_, value) => {
-          if (value) {
-            setFormData({ ...formData, destination: value.label });
-          }
-        }}
+      <Controller
+        name="destination"
+        control={control}
+        render={({ field }) => (
+          <Autocomplete
+            options={destinations}
+            getOptionLabel={(option) => option.label}
+            onChange={(_, value) => {
+              field.onChange(value?.label || '');
+            }}
+            renderInput={(params) => (
+              <TextField {...params} label="Destination" />
+            )}
+            sx={{ width: 300 }}
+          />
+        )}
       />
-      <TextField
-        label="Check-in"
-        type="date"
-        InputLabelProps={{
-          shrink: true,
-        }}
-        inputProps={{ min: today }}
-        defaultValue={today}
-        onBlur={(e) => {
-          setFormData({ ...formData, checkIn: new Date(e.target.value) });
-        }}
+
+      <Controller
+        name="checkIn"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            label="Check-in"
+            type="date"
+            InputLabelProps={{ shrink: true }}
+            inputProps={{ min: today }}
+            onChange={(e) => field.onChange(new Date(e.target.value))}
+          />
+        )}
       />
-      <TextField
-        label="Check-out"
-        type="date"
-        InputLabelProps={{
-          shrink: true,
-        }}
-        inputProps={{ min: today }}
-        onBlur={(e) => {
-          setFormData({ ...formData, checkOut: new Date(e.target.value) });
-        }}
+
+      <Controller
+        name="checkOut"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            label="Check-out"
+            type="date"
+            InputLabelProps={{ shrink: true }}
+            inputProps={{ min: today }}
+            onChange={(e) => field.onChange(new Date(e.target.value))}
+          />
+        )}
       />
-      <TextField
-        label="Adults"
-        select
-        defaultValue={1}
-        style={{ width: 100 }}
-        onChange={(e) => {
-          setFormData({
-            ...formData,
-            guests: { ...formData.guests, adults: +e.target.value },
-          });
-        }}
-      >
-        <MenuItem value={1}>1</MenuItem>
-        <MenuItem value={2}>2</MenuItem>
-        <MenuItem value={3}>3</MenuItem>
-        <MenuItem value={4}>4</MenuItem>
-      </TextField>
-      <TextField
-        label="Children"
-        select
-        defaultValue={0}
-        style={{ width: 100 }}
-        onChange={(e) => {
-          setFormData({
-            ...formData,
-            guests: { ...formData.guests, children: +e.target.value },
-          });
-        }}
-      >
-        <MenuItem value={0}>0</MenuItem>
-        <MenuItem value={1}>1</MenuItem>
-        <MenuItem value={2}>2</MenuItem>
-        <MenuItem value={3}>3</MenuItem>
-        <MenuItem value={4}>4</MenuItem>
-      </TextField>
+
+      <Controller
+        name="guests.adults"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            label="Adults"
+            select
+            {...field}
+            sx={{ width: 100 }}
+          >
+            {[1, 2, 3, 4].map((val) => (
+              <MenuItem key={val} value={val}>
+                {val}
+              </MenuItem>
+            ))}
+          </TextField>
+        )}
+      />
+
+      <Controller
+        name="guests.children"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            label="Children"
+            select
+            {...field}
+            sx={{ width: 100 }}
+          >
+            {[0, 1, 2, 3, 4].map((val) => (
+              <MenuItem key={val} value={val}>
+                {val}
+              </MenuItem>
+            ))}
+          </TextField>
+        )}
+      />
+
       <Button
+        type="submit"
         variant="contained"
         sx={{
           backgroundColor: 'orange',
@@ -111,7 +140,6 @@ const FilterForm = ({ onSubmit, destinations }: IFilrerFormProps) => {
             backgroundColor: 'darkorange',
           },
         }}
-        onClick={() => onSubmit(formData)}
       >
         Submit
       </Button>

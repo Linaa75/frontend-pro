@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { HotelCard } from '../components';
-import { IHotel } from '../types/types';
+import { IHotel } from '../types';
 
 interface IHotelListProps {
   hotels: IHotel[]

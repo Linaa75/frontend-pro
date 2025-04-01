@@ -7,7 +7,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { PageContainer } from '../components';
-import { IHotel } from '../types/types';
+import { IHotel } from '../types/apiTypes';
 
 const HotelPage = () => {
   const { id } = useParams<{ id: string }>();

@@ -887,7 +887,9 @@
       "hotel_rating": 3.5,
       "phone_number": null,
       "website": null
-    },
+    }
+  ],
+  "destinationInfo": [
     {
       "id": "f455",
       "destination": "Paris",

@@ -1,14 +1,16 @@
+interface urlParams {
+  width?: number;
+  height?: number;
+  text: string;
+  seed: number;
+} 
+
 export function generatePlaceholderUrl({
   width = 300,
   height = 300,
   text,
   seed,
-}: {
-  width?: number;
-  height?: number;
-  text: string;
-  seed: number;
-}): string {
+}: urlParams): string {
   const hashColor = (s: number) => {
     const r = (s * 123) % 255;
     const g = (s * 321) % 255;
