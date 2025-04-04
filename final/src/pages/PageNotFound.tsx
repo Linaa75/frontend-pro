@@ -1,16 +1,22 @@
+import { Box, Typography } from '@mui/material';
+
 const PageNotFound = () => {
   return (
-    <div style={
-      {display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      paddingTop: '100px'   
-      }
-    }>
-      <h1>404</h1>
-      <p>Page not found</p>
-    </div>
-  )
-}
+    <Box 
+      display="flex" 
+      flexDirection="column" 
+      alignItems="center" 
+      justifyContent="center" 
+      height="100vh"
+    >
+      <Typography variant="h1" component="h1" gutterBottom>
+        404
+      </Typography>
+      <Typography variant="h6">
+        Page not found
+      </Typography>
+    </Box>
+  );
+};
 
-export default PageNotFound
+export default PageNotFound;

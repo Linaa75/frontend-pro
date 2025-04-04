@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { filterHotels } from '../utils/filterHotels';
 import { IHotel } from '../types';
 
 export interface IFilterFormParams {
@@ -15,11 +14,10 @@ export const useHotelFilter = () => {
   const submitFilterFormHandler = async (values: IFilterFormParams) => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:3001/hotels');
-      const filtered = filterHotels(response.data, values.destination);
+      const response = await axios.get(`http://localhost:3001/hotels?city=${values.destination}`);
 
-      setHotels(filtered);
-      setHotelsNotFound(filtered.length === 0);
+      setHotels(response.data);
+      setHotelsNotFound(response.data.length === 0);
     } catch (error) {
       console.error(error);
       setHotels([]);

@@ -3,33 +3,30 @@ import { HotelCard } from '../components';
 import { IHotel } from '../types';
 
 interface IHotelListProps {
-  hotels: IHotel[]
-  hotelsNotFound: boolean
+  hotels: IHotel[];
+  hotelsNotFound: boolean;
 }
 
-const HotelList = ({hotels, hotelsNotFound}:IHotelListProps) => {
-
+const HotelList = ({ hotels, hotelsNotFound }: IHotelListProps) => {
   return (
-    <div>
+    <Box>
       {hotelsNotFound && (
-        <Typography variant="h2" gutterBottom>
+        <Typography variant="h4" color="error" gutterBottom>
           Hotels not found
         </Typography>
       )}
+
       {hotels.length > 0 && (
         <Box sx={{ margin: '40px 0' }}>
-          <Typography
-            variant="h2"
-            gutterBottom
-            sx={{ fontSize: '1.5rem', fontWeight: 'bold' }}
-          >
+          <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold' }}>
             Hotels
           </Typography>
+
           <Box
             sx={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              gap: '20px'
+              gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+              gap: '20px',
             }}
           >
             {hotels.map((hotel: IHotel) => (
@@ -38,8 +35,8 @@ const HotelList = ({hotels, hotelsNotFound}:IHotelListProps) => {
           </Box>
         </Box>
       )}
-    </div>
-  )
-}
+    </Box>
+  );
+};
 
 export default HotelList;

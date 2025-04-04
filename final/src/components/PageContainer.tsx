@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { Box } from '@mui/material';
 
 interface PageContainerProps {
   children: ReactNode;
@@ -7,10 +8,10 @@ interface PageContainerProps {
 
 const PageContainer = ({children, styles}: PageContainerProps) => {
   return (
-    <div className="container" style={styles}>
+    <Box className="container" sx={{ ...styles }}>
       {children}
-    </div>
-  )
+    </Box>
+  );
 }
 
 export default PageContainer;

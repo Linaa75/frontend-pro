@@ -3,33 +3,13 @@ import {
   CircularProgress,
   Typography
 } from '@mui/material';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { PageContainer } from '../components';
-import { IHotel } from '../types/apiTypes';
+import { useHotelById } from '../hooks/useHotelById';
 
 const HotelPage = () => {
   const { id } = useParams<{ id: string }>();
-  const [hotel, setHotel] = useState<IHotel | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!id) return;
-
-    axios
-      .get<IHotel>(`http://localhost:3001/hotels/${id}`)
-      .then((res) => {
-        setHotel(res.data);
-        setError(null);
-      })
-      .catch(() => {
-        setError('Hotel not found');
-        setHotel(null);
-      })
-      .finally(() => setLoading(false));
-  }, [id]);
+  const { hotel, loading, error } = useHotelById(id);
 
   if (loading) return <CircularProgress sx={{ m: 4 }} />;
   if (error) return <Typography color="error">{error}</Typography>;
